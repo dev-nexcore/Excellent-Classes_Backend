@@ -2,7 +2,7 @@ import express from 'express';
 import connectDB from './config/db.js'
 import dotenv from 'dotenv';
 // import cors from 'cors';
-// import authRoutes from './routes/adminRoutes.js';
+import authRoutes from './routes/adminRoutes.js';
 // import noticeRoutes from './routes/noticeRoutes.js';
 // import blogRoutes from './routes/blogRoutes.js';
 // import mediaRoutes from './routes/mediaRoutes.js';
@@ -26,7 +26,7 @@ app.use(express.json());
 
 connectDB();
 
-// app.use('/api/admin/auth', authRoutes);
+app.use('/api/admin/auth', authRoutes);
 // app.use('/api/admin/notices', noticeRoutes);
 // app.use('/api/admin/blogs', blogRoutes);
 // app.use('/api/admin/media', mediaRoutes);
