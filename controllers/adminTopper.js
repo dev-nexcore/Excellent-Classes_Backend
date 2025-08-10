@@ -1,37 +1,42 @@
 // controllers/admin/topperController.js
 
-import Topper from '../models/Topper.js';
-import Activity from '../models/Activity.js';
-import Admin from '../models/Admin.js';
+import Topper from "../models/Topper.js";
+import Activity from "../models/Activity.js";
+import Admin from "../models/Admin.js";
 
 // Add a new topper
 export const addTopper = async (req, res) => {
-  const { studentName, trade, percentage } = req.body;
+  // console.log(req.body);
+
+  const { studentName, trade, percentage, year } = req.body;
 
   try {
-    const admin = await Admin.findById(req.adminId);
-    console.log("req.adminId:", req.adminId);
+    // const admin = await Admin.findById(req.adminId);
+    // console.log("req.adminId:", req.adminId);
 
-    if (!admin) return res.status(404).json("Admin ID not found");
+    // if (!admin) return res.status(404).json("Admin ID not found");
 
     const topper = await Topper.create({
       studentName,
       trade,
       percentage,
-      createdBy: admin._id,  // ✅ fixed!
+      year,
+      createdBy: null, //admin._id, // ✅ fixed! add null temperory
     });
 
     await Activity.create({
-      user: admin.email,
-      action: 'added',
-      section: 'topper',
+      user: studentName, //admin.email,     add studentName temperory
+      action: "added",
+      section: "topper",
       dateTime: new Date(),
     });
 
-    res.status(201).json(topper);
+    return res.status(201).json(topper);
   } catch (err) {
     console.error("Add topper failed:", err); // ✅ always log the real error
-    res.status(500).json({ message: 'Failed to add topper', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Failed to add topper", error: err.message });
   }
 };
 
@@ -39,37 +44,40 @@ export const addTopper = async (req, res) => {
 export const getToppers = async (req, res) => {
   try {
     const toppers = await Topper.find().sort({ percentage: -1 });
-    res.status(200).json(toppers);
+    return res.status(200).json(toppers);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch toppers', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Failed to fetch toppers", error: err.message });
   }
 };
 
 // Update topper
 export const updateTopper = async (req, res) => {
-  const { id } = req.params;
-  const { studentName, trade, percentage } = req.body;
+  // const { id } = req.params;
+  const { studentName, trade, percentage, year, _id } = req.body;
 
   try {
     const topper = await Topper.findByIdAndUpdate(
-      id,
-      { studentName, trade, percentage },
+      _id,
+      { studentName, trade, percentage, year },
       { new: true }
     );
-    const admin = await Admin.findById(req.adminId);
+    // const admin = await Admin.findById(req.adminId);
 
-    if (!topper) return res.status(404).json({ message: 'Topper not found' });
+    if (!topper) return res.status(404).json({ message: "Topper not found" });
     await Activity.create({
-      user: admin.email,
-      action: 'added',
-      section: 'topper',  // ✅ should match your enum value
+      user: studentName, //admin.email,
+      action: "added",
+      section: "topper", // ✅ should match your enum value
       dateTime: new Date(),
     });
 
-
-    res.status(200).json(topper);
+    return res.status(200).json(topper);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to update topper', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Failed to update topper", error: err.message });
   }
 };
 
@@ -77,22 +85,23 @@ export const updateTopper = async (req, res) => {
 export const deleteTopper = async (req, res) => {
   const { id } = req.params;
 
-
   try {
-    console.log("id: ", id)
+    console.log("id: ", id);
     const topper = await Topper.findByIdAndDelete(id);
-    if (!topper) return res.status(404).json({ message: 'Topper not found' });
-    const admin = await Admin.findById(req.adminId)
+    if (!topper) return res.status(404).json({ message: "Topper not found" });
+    // const admin = await Admin.findById(req.adminId);
 
     await Activity.create({
-      user: admin.email,
-      action: 'deleted',
-      section: 'topper',
+      user: topper.studentName, //admin.email,
+      action: "deleted",
+      section: "topper",
       dateTime: new Date(),
     });
 
-    res.status(200).json({ message: 'Topper deleted successfully' });
+    res.status(200).json({ message: "Topper deleted successfully" });
   } catch (err) {
-    res.status(500).json({ message: 'Failed to delete topper', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Failed to delete topper", error: err.message });
   }
 };

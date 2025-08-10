@@ -19,10 +19,7 @@ const __dirname = path.dirname(__filename);
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:3001"
-    ],
+    origin: ["http://localhost:3000", "http://localhost:3001"],
     credentials: true,
   })
 );
@@ -39,5 +36,5 @@ app.use("/api/admin/toppers", topperRoutes);
 app.use("/api/admin/activities", activityRoutes);
 // app.use("/api/admin/news", newsRoutes);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
