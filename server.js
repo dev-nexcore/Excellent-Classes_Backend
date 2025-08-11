@@ -26,6 +26,7 @@ app.use(
 
 app.use(express.json());
 
+// Database connection
 connectDB();
 
 app.use("/api/admin/auth", authRoutes);

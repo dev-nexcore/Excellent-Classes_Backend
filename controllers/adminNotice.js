@@ -2,7 +2,7 @@
 
 import Notice from "../models/Notice.js";
 import Activity from "../models/Activity.js";
-import Admin from "../models/Admin.js";
+// import Admin from "../models/Admin.js";
 
 // Create a new notice
 export const createNotice = async (req, res) => {

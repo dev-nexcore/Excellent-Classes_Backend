@@ -11,7 +11,7 @@ const router = express.Router();
 
 // router.use(verifyAdmin);
 
-// Images
+// Will use after completeing verifyAdmin functionality
 // router.post("/addTopper", verifyAdmin, addTopper);
 // router.get("/getTopper", getToppers);
 // router.put("/updateTopper/:id", verifyAdmin, updateTopper);

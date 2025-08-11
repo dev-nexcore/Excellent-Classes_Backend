@@ -1,5 +1,5 @@
 import express from "express";
-import verifyAdmin from "../middlewares/verifyAdmin.js";
+// import verifyAdmin from "../middlewares/verifyAdmin.js";
 import {
   createNotice,
   getNotices,
