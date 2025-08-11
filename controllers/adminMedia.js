@@ -40,8 +40,6 @@ export const uploadImage = async (req, res) => {
 // Delete an image
 export const deleteImage = async (req, res) => {
   const { id } = req.params;
-  console.log(req.params.id);
-
 
   try {
     const image = await Image.findByIdAndDelete(id);
@@ -50,7 +48,7 @@ export const deleteImage = async (req, res) => {
     if (!adminId) return res.status(404).json({ message: 'Admin not found' });
 
     await Activity.create({
-      user: adminId.email,
+      user: admin.email,
       action: 'deleted',
       section: 'image',
       dateTime: new Date(),

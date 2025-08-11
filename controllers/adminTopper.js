@@ -6,7 +6,9 @@ import Admin from "../models/Admin.js";
 
 // Add a new topper
 export const addTopper = async (req, res) => {
-  const { studentName, trade, percentage, _id } = req.body;
+  // console.log(req.body);
+
+  const { studentName, trade, percentage, year } = req.body;
 
   try {
     // const admin = await Admin.findById(req.adminId);
@@ -18,6 +20,7 @@ export const addTopper = async (req, res) => {
       studentName,
       trade,
       percentage,
+      year,
       createdBy: null, //admin._id, // ✅ fixed! add null temperory
     });
 
@@ -28,7 +31,7 @@ export const addTopper = async (req, res) => {
       dateTime: new Date(),
     });
 
-    res.status(201).json(topper);
+    return res.status(201).json(topper);
   } catch (err) {
     console.error("Add topper failed:", err); // ✅ always log the real error
     res
@@ -41,7 +44,7 @@ export const addTopper = async (req, res) => {
 export const getToppers = async (req, res) => {
   try {
     const toppers = await Topper.find().sort({ percentage: -1 });
-    res.status(200).json(toppers);
+    return res.status(200).json(toppers);
   } catch (err) {
     res
       .status(500)
@@ -51,13 +54,13 @@ export const getToppers = async (req, res) => {
 
 // Update topper
 export const updateTopper = async (req, res) => {
-  const { id } = req.params;
-  const { studentName, trade, percentage } = req.body;
+  // const { id } = req.params;
+  const { studentName, trade, percentage, year, _id } = req.body;
 
   try {
     const topper = await Topper.findByIdAndUpdate(
-      id,
-      { studentName, trade, percentage },
+      _id,
+      { studentName, trade, percentage, year },
       { new: true }
     );
     // const admin = await Admin.findById(req.adminId);
@@ -70,7 +73,7 @@ export const updateTopper = async (req, res) => {
       dateTime: new Date(),
     });
 
-    res.status(200).json(topper);
+    return res.status(200).json(topper);
   } catch (err) {
     res
       .status(500)

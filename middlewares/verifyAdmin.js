@@ -1,6 +1,6 @@
 // middlewares/verifyAdmin.js
 
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret"; // make sure it's in your .env
 
@@ -18,9 +18,7 @@ const verifyAdmin = (req, res, next) => {
     req.adminId = decoded.id;
     next();
   } catch (err) {
-    return res
-      .status(401)
-      .json({ message: "Unauthorized: Invalid token", error: err.message });
+    return res.status(401).json({ message: "Unauthorized: Invalid token", error: err.message });
   }
 };
 
