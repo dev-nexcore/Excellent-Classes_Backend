@@ -2,7 +2,7 @@
 
 import Topper from "../models/Topper.js";
 import Activity from "../models/Activity.js";
-// import Admin from "../models/Admin.js";
+import Admin from "../models/Admin.js";
 
 // Add a new topper
 export const addTopper = async (req, res) => {
@@ -11,10 +11,10 @@ export const addTopper = async (req, res) => {
   const { studentName, trade, percentage, year } = req.body;
 
   try {
-    // const admin = await Admin.findById(req.adminId);
-    // console.log("req.adminId:", req.adminId);
+    const admin = await Admin.findById(req.adminId);
+    console.log("req.adminId:", req.adminId);
 
-    // if (!admin) return res.status(404).json("Admin ID not found");
+    if (!admin) return res.status(404).json("Admin ID not found");
 
     const topper = await Topper.create({
       studentName,
@@ -25,7 +25,7 @@ export const addTopper = async (req, res) => {
     });
 
     await Activity.create({
-      user: studentName, //admin.email,     add studentName temperory
+      user: admin.email, //admin.email,     add studentName temperory
       action: "added",
       section: "topper",
       dateTime: new Date(),
@@ -63,11 +63,11 @@ export const updateTopper = async (req, res) => {
       { studentName, trade, percentage, year },
       { new: true }
     );
-    // const admin = await Admin.findById(req.adminId);
+    const admin = await Admin.findById(req.adminId);
 
     if (!topper) return res.status(404).json({ message: "Topper not found" });
     await Activity.create({
-      user: studentName, //admin.email,
+      user: admin.email, //admin.email,
       action: "added",
       section: "topper", // ✅ should match your enum value
       dateTime: new Date(),
@@ -89,10 +89,10 @@ export const deleteTopper = async (req, res) => {
     console.log("id: ", id);
     const topper = await Topper.findByIdAndDelete(id);
     if (!topper) return res.status(404).json({ message: "Topper not found" });
-    // const admin = await Admin.findById(req.adminId);
+    const admin = await Admin.findById(req.adminId);
 
     await Activity.create({
-      user: topper.studentName, //admin.email,
+      user: admin.email, //admin.email,
       action: "deleted",
       section: "topper",
       dateTime: new Date(),

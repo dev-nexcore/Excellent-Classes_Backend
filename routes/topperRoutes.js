@@ -1,5 +1,5 @@
 import express from "express";
-// import verifyAdmin from "../middlewares/verifyAdmin.js";
+import verifyAdmin from "../middlewares/verifyAdmin.js";
 import {
   addTopper,
   getToppers,
@@ -9,16 +9,15 @@ import {
 
 const router = express.Router();
 
-// router.use(verifyAdmin);
+router.use(verifyAdmin);
 
-// Will use after completeing verifyAdmin functionality
-// router.post("/addTopper", verifyAdmin, addTopper);
-// router.get("/getTopper", getToppers);
-// router.put("/updateTopper/:id", verifyAdmin, updateTopper);
-// router.delete("/deleteTopper/:id", verifyAdmin, deleteTopper);
-
-router.post("/addTopper", addTopper);
+router.post("/addTopper", verifyAdmin, addTopper);
 router.get("/getTopper", getToppers);
-router.put("/updateTopper/:id", updateTopper);
-router.delete("/deleteTopper/:id", deleteTopper);
+router.put("/updateTopper/:id", verifyAdmin, updateTopper);
+router.delete("/deleteTopper/:id", verifyAdmin, deleteTopper);
+
+// router.post("/addTopper", addTopper);
+// router.get("/getTopper", getToppers);
+// router.put("/updateTopper/:id", updateTopper);
+// router.delete("/deleteTopper/:id", deleteTopper);
 export default router;
