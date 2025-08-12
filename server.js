@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: ["http://localhost:3000", "http://localhost:3001","www.excellent-classes.nexcorealliance.com"],
     credentials: true,
   })
 );
