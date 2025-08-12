@@ -6,11 +6,11 @@ import Admin from "../models/Admin.js";
 
 // Create a new notice
 export const createNotice = async (req, res) => {
-  const { user, description, date } = req.body;
+  const { description, date } = req.body;
 
   try {
-    // const admin = await Admin.findById(req.adminId);
-    // if (!admin) return res.status(404).json({ message: "Admin not found" });
+    const admin = await Admin.findById(req.adminId);
+    if (!admin) return res.status(404).json({ message: "Admin not found" });
 
     // ✅ Format the date: "03 July 2025"
     const formattedDate = new Date(date).toLocaleDateString("en-GB", {
@@ -20,18 +20,18 @@ export const createNotice = async (req, res) => {
     });
 
     const notice = await Notice.create({
-      user,
+      user: admin.email,
       description,
       date: formattedDate,
       action: "created",
     });
 
-    // await Activity.create({
-    //   user: admin.email,
-    //   action: "created",
-    //   section: "notice",
-    //   dateTime: new Date(),
-    // });
+    await Activity.create({
+      user: admin.email,
+      action: "created",
+      section: "notice",
+      dateTime: new Date(),
+    });
 
     res.status(201).json(notice);
   } catch (err) {
