@@ -43,22 +43,27 @@ export const deleteImage = async (req, res) => {
 
   try {
     const image = await Image.findByIdAndDelete(id);
-    if (!image) return res.status(404).json({ message: 'Image not found' });
-    const adminId = await Admin.findById(req.adminId);
-    if (!adminId) return res.status(404).json({ message: 'Admin not found' });
+    if (!image) return res.status(404).json({ message: "Image not found" });
+
+    const admin = await Admin.findById(req.adminId);
+    if (!admin) return res.status(404).json({ message: "Admin not found" });
 
     await Activity.create({
       user: admin.email,
-      action: 'deleted',
-      section: 'image',
+      action: "deleted",
+      section: "image",
       dateTime: new Date(),
     });
 
-    res.status(200).json({ message: 'Image deleted successfully' });
+    res.status(200).json({ message: "Image deleted successfully" });
   } catch (err) {
-    res.status(500).json({ message: 'Failed to delete image', error: err.message });
+    console.error("Delete Error:", err); // ← Helpful for debugging
+    res
+      .status(500)
+      .json({ message: "Failed to delete image", error: err.message });
   }
 };
+
 //get images
 export const getImage = async (req, res) => {
   try {
