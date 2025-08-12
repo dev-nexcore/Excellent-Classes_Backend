@@ -57,7 +57,7 @@ export const sendOtp = async (req, res) => {
     if (!admin) return res.status(404).json({ message: 'Admin not found with this email' });
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
+    const expiresAt = new Date(Date.now() + 20 * 60 * 1000); // 10 mins
 
     await OTP.deleteMany({ email }); // clean old OTPs
     await OTP.create({ email, otp, expiresAt });
@@ -66,6 +66,7 @@ export const sendOtp = async (req, res) => {
 
     res.status(200).json({ message: 'OTP sent to email' });
   } catch (err) {
+    console.error("sendOtp error:", err);
     res.status(500).json({ message: 'Failed to send OTP', error: err.message });
   }
 };
@@ -102,6 +103,10 @@ export const resetPassword = async (req, res) => {
   const { email, otp, newPassword } = req.body;
 
   try {
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({ message: 'Email, OTP, and newPassword are required' });
+    }
+
     const record = await OTP.findOne({ email, otp });
     if (!record || record.expiresAt < Date.now()) {
       return res.status(400).json({ message: 'Invalid or expired OTP' });
