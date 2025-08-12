@@ -2,12 +2,11 @@
 
 import Notice from "../models/Notice.js";
 import Activity from "../models/Activity.js";
-// import Admin from "../models/Admin.js";
+import Admin from "../models/Admin.js";
 
 // Create a new notice
 export const createNotice = async (req, res) => {
   const { user, description, date } = req.body;
-  console.log(req);
 
   try {
     // const admin = await Admin.findById(req.adminId);
@@ -71,8 +70,8 @@ export const updateNotice = async (req, res) => {
   const { user, description, date } = req.body;
 
   try {
-    // const admin = await Admin.findById(req.adminId);
-    // if (!admin) return res.status(404).json({ message: "Admin not found" });
+    const admin = await Admin.findById(req.adminId);
+    if (!admin) return res.status(404).json({ message: "Admin not found" });
 
     const formattedDate = new Date(date).toLocaleDateString("en-GB", {
       day: "2-digit",
@@ -94,7 +93,7 @@ export const updateNotice = async (req, res) => {
     if (!notice) return res.status(404).json({ message: "Notice not found" });
 
     await Activity.create({
-      user,
+      user: admin.email,
       action: "updated",
       section: "notice",
       dateTime: new Date(),
