@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.use(verifyAdmin);
+
 
 router.post("/", verifyAdmin, createNotice);
 router.get("/", getNotices);

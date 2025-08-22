@@ -49,6 +49,7 @@ export const getNotices = async (req, res) => {
     // Format the date for each notice
     const formattedNotices = notices.map((notice) => ({
       ...notice._doc,
+       originalDate: notice.date,
       date: new Date(notice.date).toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "long",
