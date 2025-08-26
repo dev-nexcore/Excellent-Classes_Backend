@@ -7,6 +7,7 @@ const topperSchema = new mongoose.Schema(
     trade: { type: String, required: true },
     percentage: { type: Number, required: true },
     year: { type: String, required: true },
+    category:{type:String,required:true},
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Admin",

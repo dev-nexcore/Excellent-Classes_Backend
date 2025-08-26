@@ -8,7 +8,7 @@ import Admin from "../models/Admin.js";
 export const addTopper = async (req, res) => {
   // console.log(req.body);
 
-  const { studentName, trade, percentage, year } = req.body;
+  const { studentName, trade, percentage, year ,category} = req.body;
 
   try {
     const admin = await Admin.findById(req.adminId);
@@ -21,6 +21,7 @@ export const addTopper = async (req, res) => {
       trade,
       percentage,
       year,
+      category,
       createdBy: null, //admin._id, // ✅ fixed! add null temperory
     });
 

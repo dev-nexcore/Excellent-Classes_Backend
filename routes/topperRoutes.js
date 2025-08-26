@@ -9,7 +9,6 @@ import {
 
 const router = express.Router();
 
-router.use(verifyAdmin);
 
 router.post("/addTopper", verifyAdmin, addTopper);
 router.get("/getTopper", getToppers);
