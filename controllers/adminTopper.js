@@ -6,19 +6,20 @@ import Admin from "../models/Admin.js";
 
 // Add a new topper
 export const addTopper = async (req, res) => {
-  // console.log(req.body);
 
-  const { studentName, trade, percentage, year ,category} = req.body;
+
+  const { name, course, percentage, year,category } = req.body;
+  console.log(req.body);
 
   try {
     const admin = await Admin.findById(req.adminId);
     console.log("req.adminId:", req.adminId);
-
+ 
     if (!admin) return res.status(404).json("Admin ID not found");
 
     const topper = await Topper.create({
-      studentName,
-      trade,
+      name,
+      course,
       percentage,
       year,
       category,
@@ -26,13 +27,14 @@ export const addTopper = async (req, res) => {
     });
 
     await Activity.create({
-      user: admin.email, //admin.email,     add studentName temperory
+      user: admin.email, //admin.email,     add name temperory
       action: "added",
       section: "topper",
       dateTime: new Date(),
     });
 
     return res.status(201).json(topper);
+   
   } catch (err) {
     console.error("Add topper failed:", err); // ✅ always log the real error
     res
@@ -41,6 +43,40 @@ export const addTopper = async (req, res) => {
   }
 };
 
+// export const addTopper = async (req, res) => {
+//   console.log(req.body);
+
+//   const { name, course, percentage, year, category } = req.body;
+
+//   try {
+//     const admin = await Admin.findById(req.adminId);
+//     console.log("req.adminId:", req.adminId);
+//     console.log("category", category);
+
+//     if (!admin) return res.status(404).json("Admin ID not found");
+
+//     const topper = await Topper.create({
+//       name,
+//       course,
+//       percentage,
+//       year,
+//       category,
+//       createdBy: null, // for now keep null
+//     });
+
+//     await Activity.create({
+//       user: admin.email,
+//       action: "added",
+//       section: "topper",
+//       dateTime: new Date(),
+//     });
+
+//     return res.status(201).json(topper);
+//   } catch (err) {
+//     console.error("Add topper failed:", err);
+//     res.status(500).json({ message: "Failed to add topper", error: err.message });
+//   }
+// };
 // Get all toppers
 export const getToppers = async (req, res) => {
   try {
@@ -56,12 +92,12 @@ export const getToppers = async (req, res) => {
 // Update topper
 export const updateTopper = async (req, res) => {
   // const { id } = req.params;
-  const { studentName, trade, percentage, year, _id } = req.body;
+  const { name, course, percentage, year,category, _id } = req.body;
 
   try {
     const topper = await Topper.findByIdAndUpdate(
       _id,
-      { studentName, trade, percentage, year },
+      { name, course, percentage, year ,category},
       { new: true }
     );
     const admin = await Admin.findById(req.adminId);

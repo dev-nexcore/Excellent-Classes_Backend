@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 
 const topperSchema = new mongoose.Schema(
   {
-    studentName: { type: String, required: true },
-    trade: { type: String, required: true },
+    name: { type: String, required: true },
+    course: { type: String, required: true },
     percentage: { type: Number, required: true },
     year: { type: String, required: true },
     category:{type:String,required:true},
